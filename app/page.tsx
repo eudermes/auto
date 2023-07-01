@@ -18,10 +18,27 @@ export default function Home() {
   const [valorCarroVelhoAgil, setValorCarroVelhoAgil] = useState<number>(0);
   const [valorSolicitado, setValorSolicitado] = useState<number>(0);
   const [acrescimoEntrada, setAcressimoEntradda] = useState<number>(0);
-  
+  const [cpf, setCpf] = useState(" ");
+  const [renda, setRenda] = useState<number>(0);
+  const [comprometimento, setComprometimento] = useState<number>(0);
+  const [valorDisponivelParcela, setValorDisponivelParcela] = useState<number>(0);
+  const [percentualComprometimento, setPercentualComprometimento] = useState<number>(0);
+  const [percentualComprometimentoX100, setPercentualComprometimentoX100] = useState<number>(0);
 
   const idadeCarro = (2023 - parseInt(anoCarroNovo));
+
+  const handleComprometimentoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setComprometimento(event.target.value);
+  }
+
+  const handleCpfChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCpf(event.target.value);
+  }
   
+  const handleRendaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRenda(event.target.value);
+  }
+
   const handleanoCarroNovoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnoCarroNovo(event.target.value);
   }
@@ -73,11 +90,28 @@ const handlevalorEntradaChange = (event: React.ChangeEvent<HTMLInputElement>) =>
           const valorMaxFloat = parseFloat(valorMax);
           const subAcressimoEntrada = valorSolicitadoFloat - valorMaxFloat
 
+        
+
 
          setValorMax(produtoCalculado), setValorCarroVelhoAgil(produtoValorCarroVelhoAgil), setValorSolicitado(somaValorSolicitado), setAcressimoEntradda(subAcressimoEntrada);
            };
   
-  
+           const handleAvaliar = () => {
+
+            const rendaFloat = parseFloat(renda);
+            const comprometimentoFloat = parseFloat(comprometimento);
+            const valorDisponivelParcelaFloat = parseFloat(setValorDisponivelParcela);
+            const opvalorDisponivelParcela = (rendaFloat * 0.3) - comprometimentoFloat;
+
+            const percentualComprometimentoFloat = parseFloat(percentualComprometimento);
+            const opPercentualComprometimento = comprometimentoFloat / rendaFloat;
+
+            const percentualComprometimentoX100Float = parseFloat(percentualComprometimentoX100);
+            const opPercentualComprometimentoX100 = percentualComprometimentoFloat * 100;
+
+           setValorDisponivelParcela(opvalorDisponivelParcela), setPercentualComprometimento(opPercentualComprometimento),setPercentualComprometimentoX100(opPercentualComprometimentoX100);
+             };
+
   
   
          return (
@@ -172,11 +206,6 @@ const handlevalorEntradaChange = (event: React.ChangeEvent<HTMLInputElement>) =>
       
       {idadeCarro > 10 && <p className='p-1 pt-1 mt-0 m-3 text-white'>Lamentamos Muito, mas infelizmente não financiamos veículos com mais de 10 anos. Gostaríamos de lhe oferecer nossas opções de consorcio: <a href='http://www.caixaconsorcio.com.br/consorcio'className='text-blue-900'>caixaconsorcio</a></p>}
       
-
-
-      {idadeCarro > 10 && <p className='p-1 pt-1 mt-0 m-3 text-red-600'>Aqui deveria aparecer o produto das variáveis valorCarroNovo * quotaMax, mas não estou conseguindo</p>}
-      
-      
       <p className='text-white'>O valor máximo LIBERADO para financiamento deste veículo é {valorMax} reais</p>
       
       <p className='text-white'>A expectativa do valor de VENDA VEÍCULO ATUAL é {valorCarroVelhoAgil} reais</p>
@@ -196,7 +225,69 @@ const handlevalorEntradaChange = (event: React.ChangeEvent<HTMLInputElement>) =>
 
       </div>
 
+      <div>
+            <h1 className='text-white text-3xl text-center' >Gostaria de analisar se o valor da parcela irá comprometer o seu orçamento financeiro?</h1>
+          </div>
+
+          <div className='flex justify-center m-7 mb-0'>
+          
+
+
+          <div>
+      <label className='m-5 mb-0'>Digite seu CPF</label>
+      <br></br>
+      <input
+        type="text"
+        id="cpf"
+        name="cpf"
+        value={cpf}
+        onChange={handleCpfChange}
+        className='border-spacing-y-2 bg-white text-black p-1 pt-1 mt-0 m-3 rounded-lg hover:bg-blue-100'
+      />
+      <p className='p-1 pt-1 mt-0 m-3 mb-0'>{cpf}</p>
+      </div>
+
+
+          <div>
+      <label className='m-5 mb-0'>Informe sua renda mensal</label>
+      <br></br>
+      <input
+        type="number"
+        id="renda"
+        name="renda"
+        value={renda}
+        onChange={handleRendaChange}
+        className='border-spacing-y-2 bg-white text-black p-1 pt-1 mt-0 m-3 rounded-lg hover:bg-blue-100'
+      />
+      <p className='p-1 pt-1 mt-0 m-3 mb-0'>{renda}</p>
+      </div>
+
+      <div>
+      <label className='m-5 mb-0'>Empréstimos e financiamentos já contratados:</label>
+      <br></br>
+      <input
+        type="number"
+        id="comprometimento"
+        name="comprometimento"
+        value={comprometimento}
+        onChange={handleComprometimentoChange}
+        className='border-spacing-y-2 bg-white text-black p-1 pt-1 mt-0 m-3 rounded-lg hover:bg-blue-100'
+      />
+      <p className='p-1 pt-1 mt-0 m-3 mb-0'>{comprometimento}</p>
+      </div>
+
+      </div>{/* fim bloco analise de renda*/}
+
+      {cpf && <p className='mt-0 text-red-600 text-center'>Parabéns seu CPF não possui nenhuma restrição</p>}
+    
+      <button onClick={handleAvaliar} className='text-white w-20 h-auto bg-orange-500'>Avaliar</button>
       
+      {percentualComprometimento <= 0.3 && <p>O valor máximo da parcela para você a adicionar aos seus gastos mensais e não ultrapassar os 30% de comprometimento financeiro é {valorDisponivelParcela} reais.</p>}  
+
+      {percentualComprometimento > 0.3 && <p>O seu percentual de Comprometimento com pagamento de financiamentos e empréstimo já encontra se acima dos 30%, ele está hoje com {percentualComprometimento}</p>}  
+
+         
+
     </div>
   );
 }
