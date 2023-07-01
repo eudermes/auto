@@ -6,16 +6,19 @@ import React, { useState, useEffect } from "react";
 export default function Home() {
 
 
-  const [anoCarroNovo, setAnoCarroNovo] = useState(2023);
-  const [valorCarroNovo, setValorCarroNovo] = useState("");
-  const [valorCarroVelho, setValorCarroVelho] = useState("");
-  const [valorEntrada, setValorEntrada] = useState("");
-  const [agil, setAgil] = useState("");
+  const [anoCarroNovo, setAnoCarroNovo] = useState<number>(2023);
+  const [valorCarroNovo, setValorCarroNovo] = useState<number>(0);
+  const [valorCarroVelho, setValorCarroVelho] = useState<number>(0);
+  const [valorEntrada, setValorEntrada] = useState<number>(0);
+  const [agil, setAgil] = useState<number>(0);
   const [quotaMax, setQuotaMax] = useState<number>(0);
   const [prazoMax, setPrazoMax] = useState<number>(0);
   const [txJuros, setTxJuros] = useState<number>(0);
-  const [produto, setProduto] = useState<number>(0);
-
+  const [valorMax, setValorMax] = useState<number>(0);
+  const [valorCarroVelhoAgil, setValorCarroVelhoAgil] = useState<number>(0);
+  const [valorSolicitado, setValorSolicitado] = useState<number>(0);
+  const [acrescimoEntrada, setAcressimoEntradda] = useState<number>(0);
+  
 
   const idadeCarro = (2023 - parseInt(anoCarroNovo));
   
@@ -53,16 +56,31 @@ const handlevalorEntradaChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     if(idadeCarro > 10){setQuotaMax(0), setPrazoMax(0), setTxJuros(0) }
   
   }, [idadeCarro]);
+  
+         const handleValorMax = () => {
+          const valorCarroNovoFloat = parseFloat(valorCarroNovo);
+          const produtoCalculado = valorCarroNovoFloat * quotaMax;
+
+          const valorCarroVelhoFloat = parseFloat(valorCarroVelho);
+          const produtoValorCarroVelhoAgil = valorCarroVelhoFloat * agil;
+
+          const valorSolicitadoFloat = parseFloat(valorSolicitado);
+          const valorEntradaFloat = parseFloat(valorEntrada);
+          const valorCarroVelhoAgilFloat = parseFloat(valorCarroVelhoAgil);
+          const somaValorSolicitado =valorCarroNovoFloat - (valorEntradaFloat + valorCarroVelhoAgilFloat);
+
+          const acressimoEntradaFloat = parseFloat(acrescimoEntrada);
+          const valorMaxFloat = parseFloat(valorMax);
+          const subAcressimoEntrada = valorSolicitadoFloat - valorMaxFloat
 
 
-  const handleCalcularProduto = () => {
-     const valorCarroNovoFloat = parseFloat(valorCarroNovo);
-     const produtoCalculado = valorCarroNovoFloat * quotaMax;
-    setProduto(produtoCalculado);
-      };
-    
-      
-  return (
+         setValorMax(produtoCalculado), setValorCarroVelhoAgil(produtoValorCarroVelhoAgil), setValorSolicitado(somaValorSolicitado), setAcressimoEntradda(subAcressimoEntrada);
+           };
+  
+  
+  
+  
+         return (
 
     <div className=' bg-blue-400'>
     <h1 className='text-center text-white text-3xl font-bold p-5'>PARÂMETROS FINANCIAMENTO:</h1>
@@ -158,10 +176,21 @@ const handlevalorEntradaChange = (event: React.ChangeEvent<HTMLInputElement>) =>
 
       {idadeCarro > 10 && <p className='p-1 pt-1 mt-0 m-3 text-red-600'>Aqui deveria aparecer o produto das variáveis valorCarroNovo * quotaMax, mas não estou conseguindo</p>}
       
-      <button onClick={handleCalcularProduto} className='text-white'>Calcular</button>
-
-      <p>{produto}</p>
+      
+      <p className='text-white'>O valor máximo LIBERADO para financiamento deste veículo é {valorMax} reais</p>
+      
+      <p className='text-white'>A expectativa do valor de VENDA VEÍCULO ATUAL é {valorCarroVelhoAgil} reais</p>
+      
+      <p className='text-white'>o valor de financiamento NECESSÁRIO é {valorSolicitado} reais</p>
+      
     
+    <button onClick={handleValorMax} className='text-white w-20 h-auto bg-orange-500'>Calcular</button>
+
+    {valorMax >= valorSolicitado && <p className='p-1 pt-1 mt-0 m-3 text-red-600'>O valor LIBERADO é suficiente</p>}
+      
+    {valorMax < valorSolicitado && <p className='p-1 pt-1 mt-0 m-3 text-red-600'>Você precisa aumentar {acrescimoEntrada} reais no valor de entrada</p>}
+    
+
       </div>
 
 
