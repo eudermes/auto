@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 
 export default function Home() {
 
-
+{/*-------------------------CONSTANTES COM OS LINKS DAS MARCAS E MODELOS---------------------}*/}
 const AUDI80="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5dvfW78JxXCzsx7ynA2rdy350qivt2eKZVA4t7mmz&s";
 const AUDI100="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA5rDkpdAtx66Yet5zzgVlx9t4U_Iwh2fTfOdNKaSt-Q&s";
 const AUDIA1="https://www.webmotors.com.br/carros/estoque/audi/a1";
@@ -41,10 +41,23 @@ const BMW318="https://image.webmotors.com.br/_fotos/AnuncioUsados/gigante/2022/2
 const BMW520="https://www.razaoautomovel.com/wp-content/uploads/2019/09/BMW-520d-1_925x520_acf_cropped.jpeg";
 const BMW530="https://bocamafrapremium.com.br/wp-content/uploads/2022/12/e1085437ea654060ae7b9e6a7fd9ce3c_1657630837337.jpg";
 
-const arrayDeVariaveis = [AUDI80, AUDI100, AUDIA1, AUDIA1QU, AUDIA3, AUDIA3SP, AUDIA4SE, AUDIA7, AUDIA8, AUDIA8LW, AUDIQ3, AUDIQ5, AUDIQ7, AUDIR8, AUDIR8GT, AUDIRS3, AUDIRS4A, AUDIRS5, AUDIRS6, AUDIS3, AUDIS4SE, AUDIS6AV, AUDIS7, AUDIS8, AUDITT, AUDITTRO, AUDITTS, BMWRX, BMW118, BMW130, BMW318, BMW520, BMW530
 
+{/*-------------------------ARRAY COM AS MARCAS E MODELOS----------------------------------------}*/}
+const arrayDeVariaveis = [AUDI80, AUDI100, AUDIA1, AUDIA1QU, AUDIA3, AUDIA3SP, AUDIA4SE, AUDIA7, AUDIA8, AUDIA8LW, AUDIQ3, AUDIQ5, AUDIQ7, AUDIR8, AUDIR8GT, AUDIRS3, AUDIRS4A, AUDIRS5, AUDIRS6, AUDIS3, AUDIS4SE, AUDIS6AV, AUDIS7, AUDIS8, AUDITT, AUDITTRO, AUDITTS, BMWRX, BMW118, BMW130, BMW318, BMW520, BMW530
 ]
 
+
+ {/*-------------------------ALTERE O MODELO DO CARRO = MARCA + 4 CARACTERES DO MODELO---------------------}*/}
+ const marcaModeloCarro = BMW130; {/*<<<<<<<------------------------- */}
+
+ {/*-------------------FILTER DO ARRAY----------------------------------------------------------------------}*/}
+
+ const linkFotoCarro = arrayDeVariaveis.filter(link => link===marcaModeloCarro);
+ 
+  {/*---------------------------------------------------------------------------------------------------------------------}*/}
+
+  
+{/*-------------------------DEMAIS CONSTANTES DO SISTEMA---------------------}*/}
   const [anoCarroNovo, setAnoCarroNovo] = useState<number>(2023);
   const [valorCarroNovo, setValorCarroNovo] = useState<number>(0);
   const [valorCarroVelho, setValorCarroVelho] = useState<number>(0);
@@ -65,13 +78,7 @@ const arrayDeVariaveis = [AUDI80, AUDI100, AUDIA1, AUDIA1QU, AUDIA3, AUDIA3SP, A
   const [percentualComprometimentoX100, setPercentualComprometimentoX100] = useState<number>(0);
   
  
-  
 
-  const marcaModeloCarro = BMW130;
-
-  {/*const fotoCarroFiltrada = arrayDeVariaveis.filter(variavel => variavel === marcaModeloCarro);*/}
-
-  
   const idadeCarro = (2023 - parseInt(anoCarroNovo));
 
   const handleComprometimentoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -331,12 +338,26 @@ const handlevalorEntradaChange = (event: React.ChangeEvent<HTMLInputElement>) =>
 
       {percentualComprometimento > 0.3 && <p>O seu percentual de Comprometimento com pagamento de financiamentos e empréstimo já encontra se acima dos 30%, ele está hoje com {percentualComprometimento}</p>}  
 
+      {/*-------------------------INPUT PARA SELECIONAR A FOTO DO CARRO (ENTRE COM A MARCA E 4 CARACTERES DO MODELO---------------------}*/}
       
+      {/*<div>
+      <label className='m-5 mb-0'>DIGITE A MARCA E 3 LETRAS DO MODELO</label>
+      <br></br>
+      <input
+        type="text"
+        id="marcaModeloCarro"
+        name="marcaModeloCarro"
+        value={marcaModeloCarro}
+        onChange={handleMarcaModeloCarroChange}
+        className='border-spacing-y-2 bg-white text-black p-1 pt-1 mt-0 m-3 rounded-lg hover:bg-blue-100'
+      />
+      <p className='p-1 pt-1 mt-0 m-3 mb-0'>{marcaModeloCarro}</p>
+             </div>*/}
       
-      
-      {/*<p>{fotoCarroFiltrada}</p>*/}     
-     
-      <img src={marcaModeloCarro} alt="Imagem" className="w-36 h-auto" />
+      <h1 className="bg-white text-blue-700 text-center">FOTO DO CARRO SELECIONADO:</h1>
+      <div className="flex justify-center">
+      <img src={linkFotoCarro} alt="Imagem" className="w-72 h-auto"  />
+      </div>
 
     </div>
   
